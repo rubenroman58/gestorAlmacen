@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comparativa de Productividad</title>
+    <style>
+        body {
+            background-color: lightgrey;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+          a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+
+        h1 {
+            text-align: center;
+            color: orange;
+            font-size: 36px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons a {
+            text-decoration: none;
+            color: white;
+            background-color: grey;
+            padding: 12px 20px;
+            margin: 0 10px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .filter-buttons a:hover,
+        .filter-buttons a.active {
+            background-color: orange;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: grey;
+            padding: 12px 20px;
+            text-align: center;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background-color: orange;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Comparativa de productividad entre trabajadores</h1>
+
+    <div class="filter-buttons">
+        <a href="?periodo=dia" class="{% if periodo == 'dia' %}active{% endif %}">Hoy</a>
+        <a href="?periodo=semana" class="{% if periodo == 'semana' %}active{% endif %}">Semana</a>
+        <a href="?periodo=mes" class="{% if periodo == 'mes' %}active{% endif %}">Mes</a>
+        <a href="?periodo=todo" class="{% if periodo == 'todo' or not periodo %}active{% endif %}">Todo</a>
+    </div>
+
+
+        <!-- Filtro por fechas -->
+    <form method="get">
+        <label for="fecha_inicio">Fecha de inicio:</label>
+        <input type="date" name="fecha_inicio" id="fecha_inicio" value="{{ request.GET.fecha_inicio }}">
+                
+        <label for="fecha_fin">Fecha de fin:</label>
+        <input type="date" name="fecha_fin" id="fecha_fin" value="{{ request.GET.fecha_fin }}">
+        
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <!-- Filtro por tipo de tarea -->
+    <form method="get">
+    <label for="tarea">Tipo de tarea:</label>
+    <select name="tarea" id="tarea">
+        <option value="">-- Todas --</option>
+        {% for tarea in tareas_disponibles %}
+        <option value="{{ tarea.id }}" {% if request.GET.tarea == tarea.id|stringformat:"s" %}selected{% endif %}>{{ tarea.nombre }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Filtrar</button>
+    </form>
+
+
+    <form method="get">
+        <label for="min_prod">Productividad mínima:</label>
+        <input type="number" step="0.01" id="min_prod" name="min_prod" value="{{ request.GET.min_prod }}"/>
+        
+        <label for="max_prod">Productividad máxima:</label>
+        <input type="number"   step="0.01" id="max_prod" name="max_prod" value="{{request.GET.max_prod}}"/>
+        <button type="submit">Filtrar</button>
+    </form>
+
+
+   {% if request.GET.fecha_inicio or request.GET.fecha_fin or request.GET.tarea or request.GET.min_prod or request.GET.max_prod %}
+    <p>Filtros aplicados:</p>
+    <ul>
+        {% if request.GET.fecha_inicio and request.GET.fecha_fin %}
+            <li>Fechas entre {{request.GET.fecha_inicio}} y {{ request.GET.fecha_fin}}</li>
+        {% elif request.GET.fecha_inicio %}
+            <li>Desde fecha: {{request.GET.fecha_inicio}}</li>
+        {% elif request.GET.fecha_fin %}
+            <li>Hasta fecha: {{request.GET.fecha_fin}}</li>
+        {% endif %}
+
+        {% if request.GET.tarea %}
+            <li>Tipo de tarea: {{request.GET.tarea}}</li>
+        {% endif %}
+
+        {% if request.GET.min_prod %}
+            <li>Productividad minima: {{request.GET.min_prod}}
+        {% endif %}
+        {% if request.GET.max_prod %}
+            <li>Productividad maxima: {{request.GET.max_prod}}</li>
+        {% endif %}
+    </ul>
+
+    {%  else %}
+    <p>No se ha aplicado ningún filtro</p>
+    {% endif %}
+
+    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>Trabajador</th>
+                <th>Total de Paquetes</th>
+                <th>Nº de Tareas</th>
+                <th>Tiempo Total (HH:MM:SS)</th>
+                <th>Productividad (paquetes/hora)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trabajador_id, stats in trabajadores %}
+                <tr>
+                <td>
+                    {{ stats.nombre }}
+                    {% if stats.apellidos %}
+                        {{ stats.apellidos }}
+                    {% else %}
+                        (Sin apellidos)
+                    {% endif %}
+                </td>
+
+                    <td>{{ stats.cantidad }}</td>
+                    <td>{{ stats.num_tareas }}</td>
+                    <td>{{ stats.tiempo_total_formateado }}</td>
+                    <td>{{ stats.productividad }}</td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="5">No hay tareas para mostrar en este período.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/paginaInicial/" class="btn">Página Principal</a>
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Tarea</title>
+    <style>
+
+        body {
+            background-color: lightgrey;
+        }
+
+        h1 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .btn {
+            background-color: grey;
+            color: white;
+            padding: 14px 20px;
+            border: 1px solid black;
+            border-radius: 2px;
+            cursor: pointer;
+            align-items: center;
+            width: 120px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: lightgray;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 93%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            background-color: orange;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #f39c12;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Iniciar Tarea</h1>
+    <div class="container">
+        <div class="form-container">
+            <form method="POST">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="error">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    {{ form.idTipTarea.label_tag }}
+                    {{ form.idTipTarea }}
+                    <div id="tarea" style="background-color: lightblue; text-align: center;"></div>
+                </div>
+                <div class="form-group">
+                    {{ form.idOper1.label_tag }}
+                    {{ form.idOper1 }}
+                    <div id="operador1" style="background-color: lightblue; text-align: center;"></div>
+                </div>
+                <div class="form-group">
+                    {{ form.idOper2.label_tag }}
+                    {{ form.idOper2 }} 
+                    <div id="operador2" style="background-color: lightblue; text-align: center;"></div>
+                </div>
+                <div class="form-group">
+                    {{ form.cantidad.label_tag }}
+                    {{ form.cantidad }}
+                </div>
+                <button type="submit">Iniciar Tarea</button>
+            </form>
+            <a href="/paginaInicial/">Página Principal</a>
+        </div>
+    </div>
+   <!--  Inserta los datos como un texto plano dentro del html-->
+    {{ trabajadores|json_script:"trabajadores_data" }}
+
+    {{ tipos_tarea|json_script:"tipos_tarea_data" }}
+
+    <script>
+    // Obtenemos los datos de tipos de tarea desde el backend (json_script) y lo convertimos en un objeto JS
+    const tarea = JSON.parse(document.getElementById('tipos_tarea_data').textContent);
+
+    // Al cambiar el valor del campo de tarea
+    document.getElementById('id_idTipTarea').addEventListener("input", function() {
+        //Toma el id de la tarea mediante el nombre
+        const id = parseInt(this.value);
+        const nombre = tarea[id];
+        const div = document.getElementById('tarea'); 
+        
+        // Mostramos el nombre de la tarea si existe
+        if (nombre) {
+            div.innerHTML = `<h3>${nombre}</h3>`;
+        } else if (this.value === "") {
+            div.innerHTML = "";
+        } else {
+            div.innerHTML = `<h3>Tarea no encontrada</h3>`;
+        }
+    });
+    </script>
+
+
+    <script>
+        const trabajadores = JSON.parse(document.getElementById("trabajadores_data").textContent);
+
+        document.getElementById("id_idOper1").addEventListener("input", function () {
+            const id = parseInt(this.value);
+            const nombre = trabajadores[id];
+            const div = document.getElementById("operador1");
+
+            if (nombre) {
+                div.innerHTML = `<h3>${nombre}</h3>`;
+            } else if (this.value === "") {
+                div.innerHTML = "";
+            } else {
+                div.innerHTML = `<h3>Trabajador no encontrado</h3>`;
+            }
+        });
+    </script>
+
+    <script>
+        trabajadores2 = JSON.parse(document.getElementById("trabajadores_data").textContent);
+
+        document.getElementById("id_idOper2").addEventListener("input", function () {
+            const id = parseInt(this.value);
+            const nombre = trabajadores2[id];
+            const div = document.getElementById("operador2");
+
+            if (nombre) {
+                div.innerHTML = `<h3>${nombre}</h3>`;
+            } else if (this.value === "") {
+                div.innerHTML = "";
+            } else {
+                div.innerHTML = `<h3>Trabajador no encontrado</h3>`;
+            }
+        });
+    </script>
+</body>
+
+</html>

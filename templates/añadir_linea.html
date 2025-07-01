@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>agregar_lineas</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h2 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold
+        }
+
+        .form-group input {
+            width: 93%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            background-color: orange;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #f39c12;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Ingresar material</h2>
+    <div class="container">
+        <div class="form-container">
+
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                <div class="error">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    {{ form.idArticulo.label_tag }}
+                    {{ form.idArticulo }}
+                    <div id="articulos" style="background-color: lightblue;text-align: center;"></div>
+                </div>
+                <div class="form-group">
+                    {{ form.cantidad_buena.label_tag }}
+                    {{ form.cantidad_buena }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.cantidad_mala.label_tag }}
+                    {{ form.cantidad_mala }}
+                </div>
+
+                <div class="form-group">
+                    {{ form.chatarra.label_tag }}
+                    {{ form.chatarra }}
+                </div>
+                <button type="submit">Continuar</button>
+            </form>
+            <a href="{% url 'detalle_albaran' albaran.id %}">Volver Atrás</a>
+
+        </div>
+    </div>
+    {{articulos|json_script:"articulos_data"}}
+    <script>
+        const articulo = JSON.parse(document.getElementById('articulos_data').textContent)
+        document.getElementById('id_idArticulo').addEventListener('input', function () {
+            const id = parseInt(this.value)
+            const nombre = articulo[id];
+            const div = document.getElementById('articulos');
+
+            if (nombre) {
+                div.innerHTML = `<h3>${nombre}</h3>`;
+            } else if (this.value === "") {
+                div.innerHTML = "";
+            } else {
+                div.innerHTML = `<h3>Articulo no encontrado</h3>`;
+            }
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Línea</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h2 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .btn {
+            background-color: grey;
+            color: white;
+            padding: 14px 20px;
+            border: 1px solid black;
+            border-radius: 2px;
+            cursor: pointer;
+            align-items: center;
+            width: 120px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: lightgray;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 93%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            background-color: orange;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #f39c12;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Editar línea del albarán</h2>
+    <div class="container">
+        <div class="form-container">
+            <form method="post">
+                <div class="form-group">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </div>
+                <button type="submit">Guardar</button>
+                <a href="{% url 'detalle_albaran' albaran.id %}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

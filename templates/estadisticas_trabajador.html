@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas del Trabajador</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h2 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            overflow-x: auto;
+        }
+
+        .aEnlac {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+
+        .stats-item {
+            margin-bottom: 30px;
+        }
+
+        .stats-item h3 {
+            margin-top: 0;
+            color: darkorange;
+        }
+
+        .stats-item ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .stats-item ul li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Estadísticas de {{ trabajador.nombre }}</h2>
+
+            <form method="get">
+                <label for="periodo"><strong>Filtrar por:</strong></label>
+                <select name="periodo" id="periodo">
+                    <option value="todo" {% if periodo == 'todo' %}selected{% endif %}>Todo</option>
+                    <option value="dia" {% if periodo == 'dia' %}selected{% endif %}>Día</option>
+                    <option value="semana" {% if periodo == 'semana' %}selected{% endif %}>Semana</option>
+                    <option value="mes" {% if periodo == 'mes' %}selected{% endif %}>Mes</option>
+                </select>
+                <button type="submit">Aplicar</button>
+            </form>
+            <br>
+
+            {% for tipo_tarea, datos in estadisticas_por_tipo.items %}
+                <div class="stats-item">
+                    <h3>{{ tipo_tarea }}</h3>
+                    <ul>
+                        <li><strong>Cantidad total:</strong> {{ datos.cantidad }}</li>
+                        <li><strong>Tiempo total:</strong> {{ datos.tiempo_total|floatformat:2 }} segundos</li>
+                        <li><strong>Productividad:</strong> {{ datos.productividad }} unidades/hora</li>
+                        <li><strong>Tiempo promedio por tarea:</strong> {{ datos.tiempo_promedio }}</li>
+                        <li><strong>Número de tareas realizadas:</strong> {{ datos.num_tareas }}</li>
+                    </ul>
+
+                    {% if datos.tareas %}
+                        <p><strong>Tareas de este tipo:</strong></p>
+                        <ul>
+                            {% for tarea in datos.tareas %}
+                                <li>
+                                    <a href="{% url 'detalle_tarea' tarea.id %}">Tarea ID: {{ tarea.id }}</a> – 
+                                    Fecha: {{ tarea.fecha }} -
+                                    Cantidad: {{ tarea.cantidad }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No hay tareas de este tipo.</p>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p>No se han encontrado tareas para este trabajador en el periodo seleccionado.</p>
+            {% endfor %}
+
+            <a class="aEnlac" href="/paginaInicial/">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h1 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .btn {
+            background-color: grey;
+            color: white;
+            padding: 14px 20px;
+            border: 1px solid black;
+            border-radius: 2px;
+            cursor: pointer;
+            align-items: center;
+            width: 120px;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: lightgray;
+        }
+
+        .aPer {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            background: none;
+            border: none;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 93%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            background-color: orange;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #f39c12;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: orange;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Listado de Trabajadores</h1>
+
+    <div class="container">
+        <div class="form-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in trabajadores_lista %}
+                    <tr>
+                        <td>
+                            {% if t.id %}
+                            <a href="{% url 'estadisticas_trabajador' t.id %}">{{ t.id }}</a>
+                            {% else %}
+                            <span>Sin ID</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ t.nombre }} {{t.apellidos}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a class="aPer" href="/paginaInicial/">Volver al Inicio</a>
+            <a href="{% url 'exportar_trabajadores' %}" class="aPer">Exportar trabajadores a Excel</a>
+
+        </div>
+    </div>
+</body>
+
+</html>

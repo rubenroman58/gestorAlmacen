@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h1 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: orange;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: gray;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+        .btn-eliminar {
+        background-color: #d9534f;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px; 
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-eliminar:hover {
+        background-color: #c9302c;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Numero</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in albaranesinfo %}
+                    <tr>
+                        <td><a href="{% url 'detalle_albaran' a.id %}">{{ a.id }}</a></td>  
+                             <td>{{ a.numero }}</td>  
+                             <td>{{ a.fecha }}</td>  
+                             <td><a href="{% url 'eliminarAlbaran' a.id %}" class="btn-eliminar">Eliminar</a></td>
+                    </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="1">No hay albaranes para mostrar.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="/paginaInicial/">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+
+
+</html>

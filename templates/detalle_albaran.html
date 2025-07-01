@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h2 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: orange;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+<body>
+    <h2>Detalles del albaran</h2>
+    
+    <div class="container">
+        <div class="form-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Articulo</th>
+                        <th>Can.Buena</th>
+                        <th>Can.Mala</th>
+                        <th>Chatarra</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in articulos %}
+                    <tr>
+                        <td>{{ a.nombre_articulo }}</td>
+                        <td>{{ a.cantidad_buena }}</td>
+                        <td>{{ a.cantidad_mala }}</td>
+                        <td>{{ a.chatarra }}</td>
+                        <td>
+                            <a href="{% url 'editar_linea' a.id %}">Editar</a> |
+                            <a href="{% url 'eliminar_linea' a.id %}" onclick="return confirm('¿Estas seguro de que deseas eliminar esta linea?');">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                
+            </table>
+            <a href="{% url 'añadir_lineas' albaran.id %}">Añadir línea</a>
+            <a  href="{% url 'listaAlbaranes' %}"> Atrás</a> 
+        </div>
+    </div>
+
+    {{ articulos_dict|json_script:"articulos_data" }}
+
+</body>
+</html>

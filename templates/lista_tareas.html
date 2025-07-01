@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tareas</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h1 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: orange;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #e0e0e0;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+
+        a:hover {
+            background-color: lightgray;
+        }
+        .btn-eliminar {
+        background-color: #d9534f;
+        color: white;
+        padding: 4px 8px;
+        font-size: 12px; 
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-eliminar:hover {
+        background-color: #c9302c;
+    }
+    </style>
+</head>
+<body>
+    <h1>Listado de Tareas</h1>
+
+    <div class="container">
+        <div class="form-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Tipo Tarea</th>
+                        <th>Operador 1</th>
+                        <th>Operador 2</th>
+                        <th>Cantidad Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for t in tareas_info %}
+                    <tr>
+                        <td><a href="{% url 'detalle_tarea' tarea_id=t.id %}">{{ t.id }}</a></td>  
+                        <td>{{ t.fecha }}</td>
+                        <td>{{ t.horaInicio }}</td>
+                        <td>{{ t.horaFin }}</td>
+                        <td>{{ t.tipo_tarea.nombre }}</td>
+                        <td>{{ t.operador1.nombre }}</td>
+                        <td>{% if t.operador2 %}{{ t.operador2.nombre }}{% else %}-{% endif %}</td>
+                        <td>{{ t.cantidad }}</td>
+                        <td><a href="{% url 'eliminarTarea' t.id %}" class="btn-eliminar">Eliminar</a></td>  
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="/paginaInicial/">Volver al Inicio</a>
+        </div>
+    </div>
+</body>
+</html>

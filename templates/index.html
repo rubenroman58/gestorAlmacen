@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión Almacenes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: lightgrey;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: orange;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .btn-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-card a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .btn-card i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color:orange;
+        }
+
+        footer {
+            background-color: orange;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Gestion de Almacén</h1>
+    </header>
+
+    <div class="main-content">
+        <div class="button-grid">
+            <div class="btn-card">
+                <i class="fas fa-play-circle"></i>
+                <a href="/iniciar_tarea/">Nueva tarea</a>
+            </div>
+            <div class="btn-card">
+                <i class="fas fa-list"></i>
+                <a href="/lista_tareas/">Lista Tareas</a>
+            </div>
+            <div class="btn-card">
+                <i class="fas fa-archive"></i>
+                <a href="/seleccionar_albaran/">Albaranes Devolución</a>
+            </div>
+            <div class="btn-card">
+                <i class="fas fa-box"></i>
+                <a href="/lista_albaranes/">Lista Albaranes</a>
+            </div>
+            <div class="btn-card">
+                <i class="fas fa-chart-bar"></i>
+                <a href="/estadisticas/">Estadísticas</a>
+            </div>
+            <div class="btn-card">
+                <i class="fas fa-file-alt"></i>
+                <a href="/informes/">Informes</a>
+            </div>
+            <div class="btn-card">
+                <i class="fas fa-sign-out-alt"></i>
+                <a href="/">Cerrar</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; {{ year }} | Todos los derechos reservados
+    </footer>
+</body>
+
+</html>

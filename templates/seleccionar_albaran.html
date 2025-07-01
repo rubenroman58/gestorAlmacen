@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Seleccionar Albarán</title>
+    <style>
+        body {
+            background-color: lightgrey;
+        }
+
+        h2 {
+            text-align: center;
+            color: orange;
+            font-size: 40px;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            background-color: grey;
+            padding: 14px 20px;
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+
+        a:hover {
+            background-color: lightgray;
+        }
+        
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 60%;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-weight: bold
+        }
+
+        .form-group input {
+            width: 93%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button[type="submit"] {
+            background-color: orange;
+            border: none;
+            color: white;
+            padding: 15px 25px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #f39c12;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Ingresar número de albarán</h2>
+    <div class="container">
+        <div class="form-container">
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.numero.label_tag }}
+                    {{ form.numero }}
+
+
+                    {% if form.numero.errors %}
+                    <div style="color:red;">
+                        {% for error in form.numero.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                <button type="submit">Continuar</button>
+                <a href="/paginaInicial/">Página Principal</a>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
